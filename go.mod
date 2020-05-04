@@ -1,5 +1,7 @@
 module contrib.go.opencensus.io/exporter/jaeger
 
+go 1.13
+
 require (
 	github.com/uber/jaeger-client-go v2.15.0+incompatible
 	go.opencensus.io v0.21.0

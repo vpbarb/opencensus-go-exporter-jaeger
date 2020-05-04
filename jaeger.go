@@ -235,11 +235,15 @@ func spanDataToThrift(data *trace.SpanData) *jaeger.Span {
 	}
 	var refs []*jaeger.SpanRef
 	for _, link := range data.Links {
-		refs = append(refs, &jaeger.SpanRef{
+		ref := &jaeger.SpanRef{
 			TraceIdHigh: bytesToInt64(link.TraceID[0:8]),
 			TraceIdLow:  bytesToInt64(link.TraceID[8:16]),
 			SpanId:      bytesToInt64(link.SpanID[:]),
-		})
+		}
+		if link.Type == trace.LinkTypeChild {
+			ref.RefType = jaeger.SpanRefType_FOLLOWS_FROM
+		}
+		refs = append(refs, ref)
 	}
 	return &jaeger.Span{
 		TraceIdHigh:   bytesToInt64(data.TraceID[0:8]),
