@@ -242,6 +242,8 @@ func spanDataToThrift(data *trace.SpanData) *jaeger.Span {
 		}
 		if link.Type == trace.LinkTypeParent {
 			ref.RefType = jaeger.SpanRefType_FOLLOWS_FROM
+			ref.TraceIdHigh = bytesToInt64(data.TraceID[0:8])
+			ref.TraceIdLow = bytesToInt64(data.TraceID[8:16])
 		}
 		refs = append(refs, ref)
 	}
